@@ -47,35 +47,11 @@
                     <div class="more">更多...</div>
                 </div>
                 <div class="book-items">
-                    <div class="book">
-                        <div class="cover"><img src="./fixtures/covers/1.svg"></div>
-                        <div class="title">揭开数据真相：从小白到数据分析达人</div>
-                        <div class="authors">Edward Zaccaro, Daniel Zaccaro</div>
-                    </div>
-                    <div class="book">
-                        <div class="cover"><img src="./fixtures/covers/2.svg"></div>
-                        <div class="title">Andorid 高级进阶</div>
-                        <div class="authors">Edward Zaccaro, Daniel Zaccaro</div>
-                    </div>
-                    <div class="book">
-                        <div class="cover"><img src="./fixtures/covers/3.svg"></div>
-                        <div class="title">揭开数据真相：从小白到数据分析达人</div>
-                        <div class="authors">Edward Zaccaro, Daniel Zaccaro</div>
-                    </div>
-                    <div class="book">
-                        <div class="cover"><img src="./fixtures/covers/4.svg"></div>
-                        <div class="title">揭开数据真相：从小白到数据分析达人</div>
-                        <div class="authors">Edward Zaccaro, Daniel Zaccaro</div>
-                    </div>
-                    <div class="book">
-                        <div class="cover"><img src="./fixtures/covers/5.svg"></div>
-                        <div class="title">揭开数据真相：从小白到数据分析达人</div>
-                        <div class="authors">Edward Zaccaro, Daniel Zaccaro</div>
-                    </div>
-                    <div class="book">
-                        <div class="cover"><img src="./fixtures/covers/6.svg"></div>
-                        <div class="title">揭开数据真相：从小白到数据分析达人</div>
-                        <div class="authors">Edward Zaccaro, Daniel Zaccaro</div>
+                    <div class="book"
+                        v-for="(book,index) in recommended" :key="index">
+                        <div class="cover"><img :src="book.img_url"></div>
+                        <div class="title">{{book.title}}</div>
+                        <div class="authors">{{book.authors}}</div>
                     </div>
                 </div>
             </div>
@@ -92,121 +68,30 @@ export default {
         return {
             announcement:'今日上架的图书全部8折',
             slides:[
-                {id:1, img_url: './fixtures/sliders/t1.svg'},
-                // {id:2, img_url: './fixtures/sliders/t2.svg'}
+                {id:1, img_url: '../static/sliders/t1.svg'},
+                // {id:2, img_url: '../static/sliders/t2.svg'}
             ],
-            latestUpdated:[
-                {
-                    "id": 1,
-                    "title": "揭开数据真相：从小白到数据分析达人",
-                    "authors": [
-                        "Edward Zaccaro, Daniel Zaccaro"
-                    ],
-                    "img_url": "./fixtures/covers/1.svg"
-                },
-                {
-                    "id": 2,
-                    "title": "Android 高级进阶",
-                    "authors": [
-                        "顾浩鑫"
-                    ],
-                    "img_url": "./fixtures/covers/2.svg"
-                },
-                {
-                    "id": 3,
-                    "title": "淘宝天猫电商运营与数据化选品完全手册",
-                    "authors": [
-                        "老夏"
-                    ],
-                    "img_url": "./fixtures/covers/3.svg"
-                },
-                {
-                    "id": 4,
-                    "title": "大数据架构详解：从数据获取到深度学习",
-                    "authors": [
-                        "朱洁",
-                        "罗华霖"
-                    ],
-                    "img_url": "./fixtures/covers/4.svg"
-                },
-                {
-                    "id": 5,
-                    "title": "Meteor全栈开发",
-                    "authors": [
-                        "杜亦舒"
-                    ],
-                    "img_url": "./fixtures/covers/5.svg"
-                },
-                {
-                    "id": 6,
-                    "title": "Kubernetes权威指南：从Docker到Kubernetes实践全接触（第2版）",
-                    "authors": [
-                        "龚正",
-                        "吴治辉",
-                        "王伟",
-                        "崔秀龙",
-                        "闫健勇"
-                    ],
-                    "img_url": "6.svg"
-                }
-            ],
+            latestUpdated:[],
             recommended:[
-                {
-                    "id": 1,
-                    "title": "揭开数据真相：从小白到数据分析达人",
-                    "authors": [
-                        "Edward Zaccaro, Daniel Zaccaro"
-                    ],
-                    "img_url": "./fixtures/covers/1.svg"
-                },
-                {
-                    "id": 2,
-                    "title": "Android 高级进阶",
-                    "authors": [
-                        "顾浩鑫"
-                    ],
-                    "img_url": "./fixtures/covers/1.svg"
-                },
-                {
-                    "id": 3,
-                    "title": "淘宝天猫电商运营与数据化选品完全手册",
-                    "authors": [
-                        "老夏"
-                    ],
-                    "img_url": "./fixtures/covers/3.svg"
-                },
-                {
-                    "id": 4,
-                    "title": "大数据架构详解：从数据获取到深度学习",
-                    "authors": [
-                        "朱洁",
-                        "罗华霖"
-                    ],
-                    "img_url": "./fixtures/covers/4.svg"
-                },
-                {
-                    "id": 5,
-                    "title": "Meteor全栈开发",
-                    "authors": [
-                        "杜亦舒"
-                    ],
-                    "img_url": "./fixtures/covers/5.svg"
-                },
-                {
-                    "id": 6,
-                    "title": "Kubernetes权威指南：从Docker到Kubernetes实践全接触（第2版）",
-                    "authors": [
-                        "龚正",
-                        "吴治辉",
-                        "王伟",
-                        "崔秀龙",
-                        "闫健勇"
-                    ],
-                    "img_url": "./fixtures/covers/6.svg"
-                }
+                
             ]
         }
     },
+
+    created () {
+        this.$http.get('https://www.easy-mock.com/mock/5a533416e22fe51ccb28bd9d/vue-project/latestUpdated')
+            .then(res=>{
+                console.log(res.body.data);
+                this.latestUpdated=res.body.data;
+            })
+
+        this.$http.get('https://www.easy-mock.com/mock/5a533416e22fe51ccb28bd9d/vue-project/recommended')
+            .then(res=>{
+                console.log(res.body.data);
+                this.recommended=res.body.data;
+            })
+    },
+
     // 不要选用created钩子而应该采用mounted
     // 否则Swiper不能生效，因为created调用时元素还没挂到DOM上
     mounted () {

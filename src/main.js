@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
 import App from './App'
 
 // import Home from './Home.vue'
@@ -15,6 +16,7 @@ const Home = resolve => require(['./Home.vue'], resolve)
 
 
 Vue.use(VueRouter)
+Vue.use(VueResource)
 
 // 当你在 HTML5 history 模式下使用 base 选项之后，所有的 to 属性都不需要写（基路径）了。
 
