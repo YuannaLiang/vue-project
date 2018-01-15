@@ -21,41 +21,26 @@
         </div>
         <div class="section">
             <!-- 新书上架 -->
-            <div class="book-list">
-                <div class="header">
-                    <div class="heading">最新更新</div>
-                    <div class="more">更多...</div>
-                </div>
-                <div class="book-items">
-                    <div class="book"
-                        v-for="(book,index) in latestUpdated" :key="index">
-                        <div class="cover">
-                            <img :src="book.img_url">
-                        </div>
-                        <div class="title">{{book.title}}</div>
-                        <div class="authors">{{book.authors}}</div>
-                    </div>
-                </div>
-            </div>
-
+            <book-list  :books="latestUpdated" heading="最新更新" @onBookSelect="preview($event)">
+            </book-list>
         </div>
         <div class="section">
             <!-- 编辑推荐 -->
-            <div class="book-list">
-                <div class="header">
-                    <div class="heading">编辑推荐</div>
-                    <div class="more">更多...</div>
-                </div>
-                <div class="book-items">
-                    <div class="book"
-                        v-for="(book,index) in recommended" :key="index">
-                        <div class="cover"><img :src="book.img_url"></div>
-                        <div class="title">{{book.title}}</div>
-                        <div class="authors">{{book.authors}}</div>
-                    </div>
-                </div>
-            </div>
+            <book-list :books="recommended" heading="编辑推荐">
+            </book-list>
         </div>
+
+        <modal-dialog ref="dialog" @dialogClose="selected=undefined"  v-if="selected">
+            <div slot="header">
+                <div class="dismiss" @click.prevent="$refs.dialog.close()"></div>
+            </div>
+            <div>
+                <img :src="selected.img_url">
+            </div>
+            <div>
+                {{ selected.title }}
+            </div>
+        </modal-dialog>
     </div>
 </template>
 
@@ -63,32 +48,30 @@
 import Swiper from "swiper"     //引入swiper库
 import 'swiper/dist/css/swiper.css'     //引入Swiper所需要的样式
 import './books/list.less'
+import BookList from './components/Booklist.vue'
+import ModalDialog from "./components/dialog.vue"
 export default {
     data () {
         return {
-            announcement:'今日上架的图书全部8折',
-            slides:[
-                {id:1, img_url: '../static/sliders/t1.svg'},
-                // {id:2, img_url: '../static/sliders/t2.svg'}
-            ],
+            announcement:'',
+            slides:[],
             latestUpdated:[],
-            recommended:[
-                
-            ]
+            recommended:[],
+            selected:undefined,
         }
     },
-
+    components: {
+        BookList,ModalDialog
+    },
     created () {
-        this.$http.get('https://www.easy-mock.com/mock/5a533416e22fe51ccb28bd9d/vue-project/latestUpdated')
-            .then(res=>{
-                console.log(res.body.data);
-                this.latestUpdated=res.body.data;
-            })
-
         this.$http.get('https://www.easy-mock.com/mock/5a533416e22fe51ccb28bd9d/vue-project/recommended')
             .then(res=>{
                 console.log(res.body.data);
-                this.recommended=res.body.data;
+                for (let prop in res.body.data) {
+                    this[prop] = res.body.data[prop]
+                }
+            },(error)=>{
+                console.log(`获取数据失败：${error}`)
             })
     },
 
@@ -103,6 +86,13 @@ export default {
             autoplay: 2500,
             autoplayDisableOnInteraction: false
         })
+    },
+
+    methods: {
+        preview (book) {
+            this.selected = book
+            this.$refs.dialog.open()
+        }
     }
 }
 </script>
